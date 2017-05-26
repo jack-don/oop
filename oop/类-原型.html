@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>类-原型</title>
+	</head>
+	<body>
+		
+	</body>
+	<script>
+		/*
+		 构造函数-原型-实例，的关系。
+		 * 每个构造函数都有一个原型对象，原型对象包含一个指向构造函数的指针。
+		 * 而实例都包含一个指向原型对象内部的指针。
+		 * */
+//		var F=function(){}  	 //函数对象。
+//		var	p=F.prototype;	 	//与F相关联的原型对象
+//		var c=p.constructor;	//与原型相关联的函数
+//		c===F					//true   对于任意函数F.prototype.constructor==F
+		
+		//由于构造函数是类的公共标识，因此这个constructor属性为对象提供了类           ****这个o也被称作实体
+//		var o=new F();       	//创建类F的一个对象
+//		o.constructor===F		//true ， constructor属性指代这个类 
+		
+		/*
+		 js中的类牵扯到三种不同的对象
+		 *	构造函数对象，其为js的类定义了名字，任何添加到这个构造函数对象中的属性都是类字段和类方法。
+		 * 	原型对象，原型对象的属性被类的所有实例所继承，如果原型对象的属性值是函数的话，这个函数就作为
+		 * 		类的实例的方法来调用。
+		 * 	实例对象，类的每个实例都是一个独立的对象，直接给这个实例定义的属性是不会为所有实例对象所共享
+		 * 		定义在实例上的非函数属性，实际上是实例字段。
+		 * */
+		
+		/*
+		  # 工厂模式没有解决对象的识别问题，而构造函数模式意味着将来可以将它的实例标识为一种特定的类型。
+		 * 		var person1=new Person;  var person2=new Person; 
+		 * 		person1 person2 之所以同时是object的实例，因所有对象均继承自object
+		 * # 明确定义
+		 * 		Person.prototype 指向了原型对象； Person.prototype.constructor又指回了Person；
+		 * */
+		
+		/*
+		 检测对象是否属于某个类
+		 * 实际上instanceof运算符并不会检查r是否由R构造函数初始化而来，而会检查r是否继承自R.prototype
+		 * 这里的继承可以不是直接继承
+		 * R没加() ，因为这里不是函数调用，只是需要像使用其他变量一样，引用该函数的名字即可。
+		 * */
+//		var R=function(){ }
+//		var r=new R();
+//		alert(r instanceof R)
+		
+		/*
+		 isprototypeOf()方法
+		 * 用来检测对象的原型链上是否存在某个特定的原型对象。
+		 * R.method 是原型对象。
+		 * instanceof运算符   isPrototypeOf()方法的缺点是，无法通过对象来获得类名，只能检测对象是否属于指定类名
+		 * 	在两个不同框架页面中创建两个数组继承自两个相同但相互独立的原型对象，其中一个页面中的数组不是另一个框
+		 * 	架页面的Array()构造函数的实例，instanceof 的结果是false。
+		 * */
+//		R.methods.isPrototypeOf(r)   
+
+		/*
+		 constructor属性
+		 * 任何js函数都可以用作构造函数，调用构造函数是需要一个prototype属性。顾（js除function.bind()除外）
+		 *  	都自动拥有prototype属性，这个属性的值是一个对象。这个对象包含唯一一个不可枚举属性constructor。
+		 * 		其值是一个函数对象。
+		 * constructor属性检测对象时不足之处与instanceof一样（每个框架页面各自拥有独立的构造函数集合）一个页面的
+		 * 		Array构造函数和另一个框架页面的构造函数Array构造函数不是同一个构造函数。
+		 * 在js中并非所有的对象都包含constructor属性。在每个新创建的函数原型上默认会有constructor属性
+		 * */
+//		var F=function(){};
+//		var P=F.prototype;
+//		var c=p.constructor;
+//		alert(c===F)
+		
+		/*
+		 js中有两种属性：数据属性，访问器属性。
+		 * 数据属性包含一个数据值的位置，在这个位置可以读取和写入。有4个描述其行为的特性。
+		 * configurable 表示能否通过delete删除属性从而重新定义属性；
+		 * enumerable 能否通过for-in 循环返回属性；
+		 * writable 能否修改属性的值；
+		 * value 包含这个属性的数据值读写的时候把值保存在这个位置；
+		 * ##要修改这个属性必须使用js5的object.defineProperty()方法。接收三个参数 属性所在对象，属性的名字，
+		 * 		描述符对象，描述符对象的属性必须是上述4个中的一个或多个，可以修改对应的特性。
+		 * */
+		
+//		var person={};
+//		Object.defineProperty(person,"name",{
+//			writable:"false",
+//			value:"dongzhen"
+//		})
+//		
+//		alert(person.name);
+//		delete person.name="chengxi";
+//		alert(person.name);
+		
+		/*
+		 访问器属性
+		 * 它包含一对getter和setter函数；
+		 * 读取访问器属性时，会调用getter函数，这个函数会返回有效的值。
+		 * 写入访问器属性时，会调用setter函数并传入新值。负责决定如何处理数据。
+		 * 访问器有下4种特性 configurable  enumerable  get set。
+		 * 		get 在读取属性时调用函数 默认值为undefined。 
+		 * 		set 在写入属性时调用函数默认值为undefined。
+		 * 该访问器属性不能定义必须使用object.defineProperty()方法来定义。
+		 * 只指定getter意味着属性不能写，尝试写入属性会被忽略。setter相反。
+		 * */
+//		var book = {
+//			_year:"2004",
+//			edition:1
+//		}
+//		
+//		Object.defineProperty(book,"year",{
+//			get:function(){
+//				return this._year;
+//			},
+//			set:function(newValue){
+//				if(newValue>2004){
+//					this._year=newValue;
+//					this.edition+=newValue-2004;
+//				}
+//			}
+//		});
+//		book.year=2005;
+//		alert(book.edition)
+		
+		/*
+		 读取属性的特性
+		 * 使用es5的Object.getOwnPropertyDescriptor()方法，可以取得给定属性的描述符。接收两个参数
+		 * 		属性所在的对象和要读取其描述符的属性名称对象的属性有（访问器特性和数据属性）
+		 * */
+//		var book={};
+//		Object.defineProperties(book,{
+//			_year:{
+//				value:2014
+//			},
+//			ediction:{
+//				value:2012
+//			},
+//			year:{
+//				get:function(){
+//					return this._year;
+//				},
+//				set:function(newValue){
+//					if(newValue>2004){
+//						this._year=newValue;
+//						this.edition+=newValue-2004;
+//					}
+//				}
+//			}
+//		});
+//		
+//		var descriptor=Object.getOwnPropertyDescriptor(book,"_year");
+//		alert(descriptor.value)
+//		alert(descriptor.configurable)
+
+		/*
+		 isPrototypeOf() 当前对象是否是另一个对象的原型
+		 * 说明person1内部有一个指向Person.prototype的指针。如果返回了true。
+		 * */
+//		alert(Person.prototype.isPrototypeOf(person1))
+
+		/*
+		 枚举属性
+		 * 想获得某个对象所有属性的列表，可以使用for-in循环.
+		 * 并不是所有属性都会在for-in循环中显示，数组的length，constructor属性就不会被显示。
+		 * 		那些已经被显示的属性称为可枚举的，通过propertyIsEnumberable()判断有哪些可枚举的属性。
+		 * 原型链中的各个原型属性也会被显示出来，前提是可枚举的，通过hasOwnProperty()判断一个属性是对
+		 * 		象自身属性还是原型属性(继承属性)。
+		 * 对于所有原型属性，propertyIsEnumberable()都会返回false，包括那些在for-in循环中可枚举的属性。
+		 * 
+		 * */
+//		var a=[1,2,3];
+//		for(var i in a){
+//			console.log(a[i]);
+//		}
+		
+//		function Gadget(name,color){
+//			this.name=name;
+//			this.color=color;
+//			this.someMethod=function(){return 1;}
+//		}
+//		Gadget.prototype.price=100;
+//		Gadget.prototype.rating=3;
+		//创建一个新对象
+//		var newtoy=new Gadget("webcam","red");
+//		for(var prop in newtoy){
+//			console.log(prop+"="+ newtoy[prop])
+//		}
+		//对对象属性和原型属性做区分，使用通过hasOwnProperty()。
+//		alert(newtoy.hasOwnProperty("name"));
+//		alert(newtoy.hasOwnProperty("price"))
+		//枚举出所有的对象自身属性
+//		for(var prop in newtoy){
+//			if(newtoy.hasOwnProperty(prop)){
+//				console.log(newtoy[prop])
+//			}
+//		}
+		//propertyIsEnumberable() 所有非內建对象属性返回true
+//		newtoy.propertyIsEnumerable("name");
+//		newtoy.propertyIsEnumerable("constructor");
+		
+
+
+
+
+
+
+
+
+	</script>
+</html>
+
+<!--
+
+	# _year 这个下划线表示只能通过对象方法访问的属性。
+	# 如果两个实例都从同一个原型对象上继承了属性，那么他们是同一个类的实例。
+		如果两个对象继承自同一个原型，往往意味着（但不绝对）它们是由同一个构造函数创建并初始化的。
+	# 从某种意义上讲，定义构造函数就是定义类。	
+	# 构造函数就是用来构建新对象的，它必须通过关键字new调用。
+	# 而初始化对象的状态的构造函数则不能作为类的标识，两个构造函数的prototype属性可能指向同一个原型对象
+		那么这两个构造函数创建的实例是属于同一个类。
+		
+	# 构造函数对象
+		构造函数（对象）为js的类定义了名字，任何添加到这个构造函数对象中的属性都是类字段和类方法
+		（如果是属性值是函数的话就是类方法）
+	#原型对象
+		原型对象的属性被类的所有实例所继承，如果原型对象的属性值是函数的话，这个函数做为类的实例的方法来调用。
+	#实例对象
+		类的每一个实例都是一个独立的对象，直接给这个实例定义的属性是不会为所有实例对象所共享的，定义在实例上
+		的非函数属性，实际上是实例的字段。
+		
+	# 需要注意的是，js的实例方法，必须使用关键字this，来存取实例字段
+	# js中基于原型的继承机制是动态的：对象从其原型继承属性，如果创建对象之后原型的属性发生改变，也会影响到
+		继承这个原型的所有实例对象。顾我们也可以给原型对象添加新方法来扩充js类。
+	# js中没有类的概念，但可以用构造函数来代替。
+-->
+	

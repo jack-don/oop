@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+	</head>
+	<body>
+	
+	
+	<script>
+//		function Shape(){
+//			this.name="shape";
+//			this.toString=function(){return this.name;};
+//		}
+//		
+//		function TwoDShape(){
+//			this.name="2D shape";
+//		}
+//		
+//		function Triangle(side,height){
+//			this.name="Triangle";
+//			this.side=side;
+//			this.height=height;
+//			this.getArea=function(){
+//				return this.side*this.height/2 ;
+//			}
+//		}
+		
+		//上面创建了三个构造函数
+		
+		/*
+		 下面开始施展继承
+		 *  TwoDShape.prototype是直接创建了新对象，且构造器函数Shape覆盖了该对象的原型。
+		 * 	这样做的意义是：
+		 * 		1.js中没有l类的概念，需要直接用new Shape()构造一个实体，然后通过
+		 * 		     该实体的属性完成相关的继承工作，而不是直接继承自Shape()构造器。
+		 * 		2. 继承实现之后我们对Shape()进行任何修改，都不会影响TwoDShape()
+		 * 			因为所继承的只是由该构造器所创建的一个实体。
+		 * 	因为对象的prototype属性进行完全重写时，有可能会对对象的constructor属性产生
+		 * 		一定的负面影响，顾需要重置。
+		 * 	查找toString的方法时：
+		 * 		1.首先会遍历my对象中的所有属性，但没有找到一个toString，
+		 * 		2.接着再去my._roto_所指向的对象，该对象应该是继承关系构建过程中由new TwoDShape
+		 * 		  所创建的实体。  
+		 * 		3.终于在new Shape() 所创建的实体中找到了toString方法
+		 * 		4.最后该方法就会在my对象中被调用，并且其this指向了my。
+		 * */
+//		TwoDShape.prototype=new Shape();
+//		Triangle.prototype=new TwoDShape();
+//		
+//		TwoDShape.prototype.constructor=TwoDShape;
+//		Triangle.prototype.constructor=Triangle;
+		
+		//测试 （也可以用其他两个构造器来创建函数）
+//		var my=new Triangle(5,10);
+//		alert(my.getArea())
+//		alert(my.toString())
+		
+		//检测 my对象是属于哪个构造器的实例
+//		alert(my instanceof Shape)
+//		alert(my instanceof TwoDShape)
+//		alert(my instanceof Triangle)
+		
+		//检测对象原型链上是否存在某个特定原型对象
+//		alert(Shape.prototype.isPrototypeOf(my))
+//		alert(TwoDShape.prototype.isPrototypeOf(my))
+//		alert(Triangle.prototype.isPrototypeOf(my))
+
+
+		
+	/**********************************************************		new doc		******************************************/	
+		
+		/*
+		 将共享属性迁移到原型中去
+		 *  用某一个构造器创建对象时。其属性就被添加到this中去。这会使某些不能通过实体改变的属性出现
+		 * 		一些效率低下的情况。如Shape()构造器是这样定义的。
+		 * 		每当new Shape() 新建对象时，每个实体都会有一个全新的 name属性，并且在内存中拥有自己的
+		 * 			储存空间独立空间。解决办法将name属性添加到所有实体所共享的原型对象中去。虽然这样更
+		 * 			有效率，但只针对对象实体中的不可变属性而言（可变的就不能单一的放到共享当中去了）。这样
+		 * 			也同样适用于对象中的共享性方法。
+		 * 	实际上调用my.toSting()的区别仅仅在于，查找时更多的发生在Shape.prototype中，而不再需要到new Shape()所创建的
+		 * 		对象中查找了。
+		 * 	而且ew Shape()方式会将Shape的属性设定为对象自身的属性，不利于代码的重用。（顾要将其设在原型中）
+		 * */
+		function Shape(){
+			this.name="shape";
+		}
+		
+		//优化，name属性添加到所有实体所共享的原型对象中去
+		function Shape(){}
+		Shape.prototype.name="shape";
+		
+		//把三个构造函数的属性方法都放到共享的原型对象中去；通常会在原型对象进行扩展之前，先完成相关的继承关系构建
+		//否则TwoDShape.prototype中后续新内容有可能会抹掉我们所继承来的东西
+		function Shape(){}
+		Shape.prototype.name="shape";
+		Shape.prototype.toString=function(){return this.name};
+//		
+		function TwoDShape(){}
+		TwoDShape.prototype=new Shape();			
+		//应为这里的TwoDShape.prototype指向发生了改版，所以其constructor也要重置
+		TwoDShape.prototype.constructor=TwoDShape;
+		TwoDShape.prototype.name="2D shape";
+	
+		//Triangle构造器情况略有不同，由new Triangle（）所创建的各个对象在尺寸上是不同的，因此该对象的side，height这两个
+		//属性必须保持自身所有（因为不想共享属性那样所有对象继承的都是相同的。）而剩于的属性和getArea()方法都可以设置共享
+		//重中之重，必须在扩展原型对象之前完成继承关系非构建。
+		function Triangle(side,height){
+			this.side=side;
+			this.height=height;
+		}
+		//扩展原型对象之前完成继承关系非构建。
+		Triangle.prototype=new TwoDShape();
+		Triangle.prototype.constructor=Triangle;
+		Triangle.prototype.name="Triangle";
+		Triangle.prototype.getArea=function(){return this.side*this.height;}
+		
+		//测试
+		var my=new Triangle(10,1);
+//		alert(my.getArea())
+//		alert(my.toString())
+		//通过hasOwnProperty()判断一个属性是对象自身属性还是原型属性。 如果是自身属性返回true
+		alert(my.hasOwnProperty("side"))
+		alert(my.hasOwnProperty("name"))
+		
+	</script>
+	</body>
+</html>
