@@ -1,0 +1,66 @@
+/* pages/help-run/help-run.wxss */
+.weui-flex__inp{
+  -webkit-box-flex:2;
+  -webkit-flex:2;
+  flex:2;
+}
+.weui-flex{
+  height: 100rpx;
+  background: #fff;
+  margin-top: 5px;
+}
+.help-adress,.help-sel-adress input,.help-adress,.icon-dingwei,.help-send-span{
+  line-height: 100rpx;
+}
+.help-send-span{
+  padding-left: 10rpx;
+}
+.icon-dingwei{
+  color: red;
+  line-height: 100rpx;
+}
+.help-sel-adress{
+  position: relative;
+}
+.help-arrow-right{
+  position: absolute;
+  top: 19%;
+  right: 0;
+}
+.icon-dingwei,.help-send-span{
+  display: inline-block;
+  font-size: 30rpx;
+}
+.help-sel-adress input{
+  font-size: 30rpx;
+  height: 100rpx;
+  min-height: 100rpx;
+}
+.help-history{
+  position: relative;
+}
+.help-history span{
+  width: 1px;
+  height: 80rpx;
+  background: #ccc;
+  position: absolute;
+  top: 10rpx;
+  left: 25rpx;
+}
+.help-history,.help-adress{
+  text-align: center;  
+}
+.help-hitory-adress{
+  font-size: 24rpx;
+  color: orangered;
+}
+.icon-home-copy{
+  color: red;
+}
+
+/*  发货  */
+.help-receive-color{
+  color: orange;
+}
+
+/*  物品信息  */

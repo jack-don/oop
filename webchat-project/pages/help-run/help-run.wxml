@@ -1,0 +1,37 @@
+<!-- help-run.wxml -->
+  <!--<view class="help-title">
+    <text class="help-title-title">{{motto}}</text>
+  </view>-->
+<view class="page">
+    <view class="page__bd page__bd_spacing">
+
+      <!--  发货地址  -->
+      <view class="weui-flex">
+        <view class="weui-flex__item help-adress"><i class="iconfont icon-dingwei"></i><span class="help-send-span">发货地址</span></view>
+          <view class="weui-flex__inp help-sel-adress">
+            <input type="text" class="help-send-adrees" placeholder-style="color:#ccc;" placeholder="请选择/输入具体位置"/>
+            <span class="help-arrow-right">></span>
+          </view>
+          <view class="weui-flex__item help-history">
+            <span></span>
+            <i class="iconfont icon-home-copy"></i>
+            <view class="placeholder help-hitory-adress">历史地址</view>
+          </view>
+      </view>
+      
+      <!--  收货地址  -->
+      <view class="weui-flex">
+        <view class="weui-flex__item help-adress"><i class="iconfont icon-dingwei help-receive-color"></i><span class="help-send-span">收货地址</span></view>
+          <view class="weui-flex__inp help-sel-adress">
+            <input type="text" class="help-send-adrees" placeholder-style="color:#ccc;font-size:30rpx;line-height:100rpx;"  placeholder="请选择/输入具体位置"/>
+            <span class="help-arrow-right">></span>
+          </view>
+          <view class="weui-flex__item help-history">
+            <span></span>
+            <i class="iconfont icon-home-copy help-receive-color"></i>
+            <view class="placeholder help-hitory-adress help-receive-color">历史地址</view>
+          </view>
+      </view>
+    </view>
+</view>
+
