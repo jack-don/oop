@@ -123,8 +123,43 @@
 			 * 		((max-min)*Math.random())+min  获取某个max和min之间的值。
 			 * floor() 用于舍弃  ceil()用于取人  round() 四舍五入
 			 * */
-
-
+			
+			/*
+			 引用
+			 * 引用：是一个指向对象实际位置的指针（前提实际的对象坑定不会是引用，字符串永远是字符串···）
+			 * 多个变量却能够指向同一对象。
+			 * 引用指向的只能是具体的对象，而不是另一个引用。js里是沿着引用链一直上溯到原来那个对象。
+			 * 
+			 * */
+//			var alreadyArr=[1,2];
+//			var newObjArr=alreadyArr;
+//			alreadyArr.push("xige");
+			//newObjArr,alreadyArr 都具备新增值 xige。因为他们指向同一个数组对象。
+//			alert(newObjArr);
+			
+			/*
+			 如果实际对象已经改变，但原来指向它的引用仍然保持指向旧的对象。
+			 * 如果这句话var newObjArr=alreadyArr;定义在alreadyArr=new Array("jiange")之后
+			 * 		那么结果就为false因为alreadyArr虽已经置为了新对象但是newObjArr的引用也指向了
+			 * 		这个新对象。
+			 * */
+			//设置为字符串数组
+//			var alreadyArr=new Array("xige","liuge");
+			//将newObjArr设置为alreadyArr的引用
+//			var newObjArr=alreadyArr;
+			//将alreadyArr置为一个新对象
+//			alreadyArr=new Array("jiange")
+			//alreadyArr,newObjArr已经指向不同的对象了。alreadyArr指向new Array("jiange")，
+			//newObjArr指向new Array("xige","liuge")。
+//			alert(alreadyArr!=newObjArr);
+						
+			var a=2;
+			var b=a;
+			a=3;
+			alert(b)
+			
+			
+			
 		</script>
 	</body>
 </html>
